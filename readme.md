@@ -4,7 +4,7 @@
 動的図形・証明・アニメーションで学ぶ、楽しい幾何学ツール！
 
 🌐 デモサイト: 
-https://jkj7vv2nd7-lang.github.io/geometry-app/(opens in new tab)
+https://jkj7vv2nd7-lang.github.io/geometry-app/
 
 🎯 このアプリでできること
 📍 基本の図形を描こう
