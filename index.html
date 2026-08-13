@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>図形学習用作図アプリ - 探求型幾何学ツール</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>📐 図形探求アプリ</h1>
+            <p>動的図形・証明・アニメーションで学ぶ幾何学</p>
+        </header>
+
+        <!-- ツールバー -->
+        <div class="toolbar" id="toolbar">
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="point" title="点を配置">📍 点</button>
+                <button class="tool-btn" data-tool="line" title="直線を描画">📏 直線</button>
+                <button class="tool-btn" data-tool="segment" title="線分を描画">➖ 線分</button>
+                <button class="tool-btn" data-tool="ray" title="半直線を描画">↗️ 半直線</button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="circle" title="円を描画">⭕ 円</button>
+                <button class="tool-btn" data-tool="arc" title="弧を描画">⌒ 弧</button>
+                <button class="tool-btn" data-tool="ellipse" title="楕円を描画">⬭ 楕円</button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="triangle" title="三角形">🔺 三角形</button>
+                <button class="tool-btn" data-tool="rectangle" title="長方形">⬜ 長方形</button>
+                <button class="tool-btn" data-tool="polygon" title="多角形">⬡ 多角形</button>
+                <button class="tool-btn" data-tool="regular-polygon" title="正多角形">⬢ 正多角形</button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="perpendicular" title="垂線">⊥ 垂線</button>
+                <button class="tool-btn" data-tool="parallel" title="平行線">∥ 平行線</button>
+                <button class="tool-btn" data-tool="midpoint" title="中点">• 中点</button>
+                <button class="tool-btn" data-tool="bisector" title="垂直二等分線">⊥ 二等分線</button>
+                <button class="tool-btn" data-tool="angle-bisector" title="角の二等分線">∠ 角二等分</button>
+            </div>
+            
+            <div class="tool-group special-tools">
+                <button class="special-btn" id="dragModeBtn" title="ドラッグモード">🖐️ ドラッグ</button>
+                <button class="special-btn" id="traceModeBtn" title="軌跡モード">📈 軌跡</button>
+                <button class="special-btn" id="measureBtn" title="測定ツール">📏 測定</button>
+            </div>
+            
+            <div class="tool-group action-tools">
+                <button class="action-btn" id="animationBtn">▶️ アニメーション</button>
+                <button class="action-btn" id="proofBtn">📚 証明</button>
+                <button class="action-btn" id="saveBtn">💾 保存</button>
+                <button class="action-btn" id="loadBtn">📂 読込</button>
+                <button class="action-btn" id="shareBtn">🔗 共有</button>
+                <button class="clear-btn" id="clearBtn">🗑️ クリア</button>
+            </div>
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- キャンバスエリア -->
+            <div class="canvas-area">
+                <canvas id="mainCanvas"></canvas>
+                <div class="canvas-overlay" id="canvasOverlay"></div>
+            </div>
+
+            <!-- サイドパネル -->
+            <aside class="side-panel" id="sidePanel">
+                <div class="panel-tabs">
+                    <button class="tab-btn active" data-tab="info">📐 情報</button>
+                    <button class="tab-btn" data-tab="properties">💡 性質</button>
+                    <button class="tab-btn" data-tab="measurements">📊 測定</button>
+                    <button class="tab-btn" data-tab="history">🕐 履歴</button>
+                </div>
+
+                <!-- 情報タブ -->
+                <div class="tab-content active" id="info-tab">
+                    <div class="info-section">
+                        <h3>図形情報</h3>
+                        <div id="shapeInfo" class="info-display">
+                            <p class="placeholder">図形を描画すると詳細情報が表示されます</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 性質タブ -->
+                <div class="tab-content" id="properties-tab">
+                    <div class="info-section">
+                        <h3>性質・定理</h3>
+                        <div id="theoremInfo" class="info-display">
+                            <p class="placeholder">図形の性質や定理がここに表示されます</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 測定タブ -->
+                <div class="tab-content" id="measurements-tab">
+                    <div class="info-section">
+                        <h3>測定値</h3>
+                        <div id="measurementInfo" class="info-display">
+                            <div class="measurement-item">
+                                <span class="label">距離:</span>
+                                <span class="value" id="distanceValue">-</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="label">角度:</span>
+                                <span class="value" id="angleValue">-</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="label">面積:</span>
+                                <span class="value" id="areaValue">-</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="label">周長:</span>
+                                <span class="value" id="perimeterValue">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>軌跡情報</h3>
+                        <div id="traceInfo" class="info-display">
+                            <div class="measurement-item">
+                                <span class="label">状態:</span>
+                                <span class="value" id="traceStatus">OFF</span>
+                            </div>
+                            <div class="measurement-item">
+                                <span class="label">記録点数:</span>
+                                <span class="value" id="traceCount">0</span>
+                            </div>
+                            <button class="btn btn-small" id="clearTraceBtn">軌跡をクリア</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 履歴タブ -->
+                <div class="tab-content" id="history-tab">
+                    <div class="info-section">
+                        <h3>操作履歴</h3>
+                        <div id="historyList" class="history-list">
+                            <p class="placeholder">操作履歴がここに表示されます</p>
+                        </div>
+                        <div class="history-controls">
+                            <button class="btn btn-small" id="undoBtn">↶ 元に戻す</button>
+                            <button class="btn btn-small" id="redoBtn">↷ やり直す</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- ステータスバー -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span class="status-item" id="currentTool">ツール: 点</span>
+                <span class="status-item" id="mouseCoords">座標: (0, 0)</span>
+            </div>
+            <div class="status-right">
+                <span class="status-indicator" id="dragMode">ドラッグ: OFF</span>
+                <span class="status-indicator" id="traceMode">軌跡: OFF</span>
+                <span class="status-indicator" id="objectCount">オブジェクト: 0</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- アニメーションモーダル -->
+    <div class="modal" id="animationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎬 アニメーション</h2>
+                <button class="close-btn" data-modal="animationModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="animation-presets">
+                    <h3>プリセットアニメーション</h3>
+                    <div class="preset-grid">
+                        <button class="preset-btn" data-animation="rotate">🔄 回転</button>
+                        <button class="preset-btn" data-animation="scale">📏 拡大縮小</button>
+                        <button class="preset-btn" data-animation="translate">↔️ 平行移動</button>
+                        <button class="preset-btn" data-animation="reflect">🪞 反射</button>
+                        <button class="preset-btn" data-animation="morph">🔀 変形</button>
+                        <button class="preset-btn" data-animation="oscillate">〰️ 振動</button>
+                    </div>
+                </div>
+
+                <div class="animation-controls">
+                    <h3>制御</h3>
+                    <div class="control-buttons">
+                        <button class="btn btn-success" id="playAnimation">▶️ 再生</button>
+                        <button class="btn btn-warning" id="pauseAnimation">⏸️ 一時停止</button>
+                        <button class="btn btn-danger" id="stopAnimation">⏹️ 停止</button>
+                        <button class="btn" id="resetAnimation">🔄 リセット</button>
+                    </div>
+                </div>
+
+                <div class="animation-settings">
+                    <h3>設定</h3>
+                    <div class="setting-item">
+                        <label for="animationSpeed">速度</label>
+                        <input type="range" id="animationSpeed" min="1" max="10" value="5">
+                        <span id="speedDisplay">5</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="rotationAngle">回転角度</label>
+                        <input type="range" id="rotationAngle" min="0" max="360" value="0">
+                        <span id="angleDisplay">0°</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="scaleValue">拡大率</label>
+                        <input type="range" id="scaleValue" min="50" max="200" value="100">
+                        <span id="scaleDisplay">100%</span>
+                    </div>
+                </div>
+
+                <div class="animation-description">
+                    <h3>説明</h3>
+                    <div id="animationDescription">
+                        <p>アニメーションを選択すると、図形の幾何学的変換を視覚的に理解できます。</p>
+                        <ul>
+                            <li><strong>回転:</strong> 図形を中心点の周りに回転させます</li>
+                            <li><strong>拡大縮小:</strong> 図形のサイズを変更します</li>
+                            <li><strong>平行移動:</strong> 図形を移動させます</li>
+                            <li><strong>反射:</strong> 図形を軸に対して反転させます</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 証明モーダル -->
+    <div class="modal" id="proofModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>📚 定理の証明</h2>
+                <button class="close-btn" data-modal="proofModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="proof-selector">
+                    <h3>定理を選択</h3>
+                    <select id="theoremSelect" class="select-box">
+                        <option value="">図形を選択してください</option>
+                        <option value="triangle-angles">三角形の内角の和</option>
+                        <option value="pythagorean">ピタゴラスの定理</option>
+                        <option value="circle-angles">円周角の定理</option>
+                        <option value="parallel-angles">平行線の錯角</option>
+                        <option value="midpoint">中点連結定理</option>
+                    </select>
+                </div>
+
+                <div class="proof-content" id="proofContent">
+                    <p class="placeholder">図形を描画し、定理を選択すると証明が表示されます。</p>
+                </div>
+
+                <div class="proof-navigation">
+                    <button class="btn" id="prevProofStep">◀️ 前のステップ</button>
+                    <span id="proofStepIndicator">ステップ 0 / 0</span>
+                    <button class="btn" id="nextProofStep">次のステップ ▶️</button>
+                </div>
+
+                <div class="proof-visualization" id="proofVisualization">
+                    <canvas id="proofCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保存・共有モーダル -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💾 保存・共有</h2>
+                <button class="close-btn" data-modal="saveModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="save-options-grid">
+                    <div class="save-option" id="saveImageOption">
+                        <div class="option-icon">🖼️</div>
+                        <h4>画像として保存</h4>
+                        <p>PNG形式でダウンロード</p>
+                    </div>
+                    <div class="save-option" id="saveJSONOption">
+                        <div class="option-icon">📄</div>
+                        <h4>データを保存</h4>
+                        <p>JSON形式でエクスポート</p>
+                    </div>
+                    <div class="save-option" id="saveSVGOption">
+                        <div class="option-icon">🎨</div>
+                        <h4>SVGで保存</h4>
+                        <p>ベクター形式</p>
+                    </div>
+                    <div class="save-option" id="shareURLOption">
+                        <div class="option-icon">🔗</div>
+                        <h4>共有URL</h4>
+                        <p>リンクを生成</p>
+                    </div>
+                    <div class="save-option" id="loadJSONOption">
+                        <div class="option-icon">📂</div>
+                        <h4>データ読み込み</h4>
+                        <p>JSONをインポート</p>
+                    </div>
+                    <div class="save-option" id="exportPDFOption">
+                        <div class="option-icon">📑</div>
+                        <h4>PDF出力</h4>
+                        <p>印刷用フォーマット</p>
+                    </div>
+                </div>
+
+                <div class="data-display" id="dataDisplay" style="display: none;">
+                    <h3>データ</h3>
+                    <textarea id="jsonDataArea" rows="10" readonly></textarea>
+                    <button class="btn" id="copyDataBtn">📋 コピー</button>
+                </div>
+
+                <div class="url-display" id="urlDisplay" style="display: none;">
+                    <h3>共有URL</h3>
+                    <input type="text" id="shareURLInput" readonly>
+                    <button class="btn" id="copyURLBtn">📋 コピー</button>
+                    <p class="info-text">このURLを共有すると、他の人が同じ図形を見ることができます。</p>
+                </div>
+
+                <input type="file" id="fileInput" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>❓ 使い方ガイド</h2>
+                <button class="close-btn" data-modal="helpModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-sections">
+                    <section class="help-section">
+                        <h3>🎯 基本操作</h3>
+                        <ul>
+                            <li><strong>点の配置:</strong> 「点」ツールを選択してキャンバスをクリック</li>
+                            <li><strong>図形の描画:</strong> 各ツールを選択し、必要な点をクリック</li>
+                            <li><strong>ドラッグモード:</strong> ONにすると点を動かして図形を変形できます</li>
+                        </ul>
+                    </section>
+
+                    <section class="help-section">
+                        <h3>🔧 高度な機能</h3>
+                        <ul>
+                            <li><strong>軌跡モード:</strong> 点を動かした軌跡を記録します</li>
+                            <li><strong>アニメーション:</strong> 図形の変換を動的に表示</li>
+                            <li><strong>証明:</strong> 定理の証明をステップごとに確認</li>
+                        </ul>
+                    </section>
+
+                    <section class="help-section">
+                        <h3>💾 保存と共有</h3>
+                        <ul>
+                            <li><strong>画像保存:</strong> 作図した図形をPNG形式で保存</li>
+                            <li><strong>データ保存:</strong> 後で編集できるようにJSON形式で保存</li>
+                            <li><strong>URL共有:</strong> 他の人と図形を共有</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ヘルプボタン -->
+    <button class="help-fab" id="helpBtn" title="ヘルプ">❓</button>
+
+    <!-- スクリプト -->
+    <script src="js/shapes.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/proof.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
