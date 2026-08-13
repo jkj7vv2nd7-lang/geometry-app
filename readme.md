@@ -1,11 +1,10 @@
-README.md
 📐 図形探求アプリ - Geometry Explorer
 バージョンライセンス対象年齢
 
 動的図形・証明・アニメーションで学ぶ、楽しい幾何学ツール！
 
 🌐 デモサイト: 
-https://あなたのユーザー名.github.io/geometry-app/(opens in new tab)
+https://jkj7vv2nd7-lang.github.io/geometry-app/(opens in new tab)
 
 🎯 このアプリでできること
 📍 基本の図形を描こう
@@ -199,99 +198,5 @@ MIT License - 自由に使って、改造して、共有してください！
 🙏 謝辞
 このアプリは、数学を楽しく学びたいすべての生徒・先生のために作られました。
 
-📞 お問い合わせ
-作者: [あなたの名前]
-Email: [あなたのメールアドレス]
-Twitter: [@あなたのTwitter]
-GitHub: 
-https://github.com/あなたのユーザー名(opens in new tab)
-🎉 楽しんでください！
-図形を描いて、動かして、学んで、楽しもう！
-
-数学は難しくない。見えるようにすれば、わかるようになる！✨
-
-Made with ❤️ for Math Education
-
 最終更新: 2024年1月
 
-📋 GitHub Pages公開手順
-ステップ1: GitHubリポジトリを作成
-GitHubにログイン
-
-https://github.com(opens in new tab)
- にアクセス
-新しいリポジトリを作成
-
-右上の「+」→「New repository」をクリック
-Repository name: geometry-app
-Description: 動的図形・証明・アニメーションで学ぶ幾何学ツール
-Publicを選択（誰でも見られるようにする）
-✅ Add a README file にチェック（後で上書きします）
-「Create repository」をクリック
-ステップ2: ファイルをアップロード
-方法A: GitHubのWebインターフェースで（簡単）
-リポジトリのページで「Add file」→「Upload files」
-すべてのファイルをドラッグ&ドロップ
-index.html
-README.md
-css/style.css
-js/shapes.js
-js/tools.js
-js/animation.js
-js/proof.js
-js/storage.js
-js/main.js
-下の方で「Commit changes」をクリック
-方法B: Git コマンドで（推奨）
-VS Codeのターミナルで：
-
-bash
-
-コピー
-
-コピー
-# リポジトリをクローン
-git clone https://github.com/あなたのユーザー名/geometry-app.git
-
-# フォルダに移動
-cd geometry-app
-
-# すべてのファイルをコピー（作成したファイルをこのフォルダに入れる）
-
-# Gitに追加
-git add .
-
-# コミット
-git commit -m "初回コミット: 図形探求アプリを追加"
-
-# プッシュ
-git push origin main
-ステップ3: GitHub Pagesを有効化
-リポジトリのページで「Settings」タブをクリック
-
-左サイドバーで「Pages」をクリック
-
-Sourceセクションで：
-
-Branch: mainを選択
-Folder: / (root)を選択
-「Save」をクリック
-数分待つと、緑色のボックスに公開URLが表示されます：
-
-Your site is published at https://あなたのユーザー名.github.io/geometry-app/
-ステップ4: 動作確認
-表示されたURLをクリック
-アプリが正しく動作するか確認
-エラーがあれば、ブラウザの開発者ツール（F12）でコンソールを確認
-🎨 README.mdのカスタマイズ
-README.mdの以下の部分をあなたの情報に変更してください：
-
-🌐 デモサイト: 
-https://あなたのユーザー名.github.io/geometry-app/(opens in new tab)
-
-📞 お問い合わせ
-作者: [あなたの名前]
-Email: [あなたのメールアドレス]
-Twitter: [@あなたのTwitter]
-GitHub: 
-https://github.com/あなたのユーザー名(opens in new tab)
